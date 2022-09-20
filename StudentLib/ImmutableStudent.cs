@@ -1,9 +1,20 @@
 namespace StudentLib;
-using static StudentLib.Status;
 
-public record ImmutableStudent(int Id, string GivenName, string Surname, Status Status, DateTime StartDate, DateTime EndDate, DateTime GraduationDate){
-    //public override string ToString() => GivenName + " " + Surname + " " + Id; 
-    //hvad med status? skal den være parameter? eller skal den sættes ligesom i Student.cs??
-    //svært at bedømme ud fra opg.beskrivelsen
-    //skal vi overhovedet lave en tostring for den her??? fucking opgave er mega vague
+public record ImmutableStudent(int Id, string GivenName, string Surname, DateTime StartDate, DateTime EndDate, DateTime GraduationDate, Status Status){
+
+    public Status Status {get {return Findstatus();}}
+
+public Status Findstatus(){
+    Status S = Status.New;
+    if(DateTime.Compare(EndDate, DateTime.Now) < 0){ //er EndDate før nu?
+                S = Status.Dropout;
+            } else if (DateTime.Compare(EndDate, GraduationDate) == 0) { //er end og graduate samme tid?
+                S = Status.Graduated;
+            } else if (DateTime.Compare(DateTime.Now, GraduationDate) > 0){ //er student aktiv?
+                S = Status.Active;
+            } else if(DateTime.Compare(DateTime.Now, StartDate) < 0){ //er student ikke startet endnu?
+                S = Status.New;
+            }
+        return S;
+    }
 }
