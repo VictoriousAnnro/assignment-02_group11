@@ -1,5 +1,4 @@
 namespace Assignment2;
-using System.Collections;
 
 public static class Extensions
 {
@@ -32,37 +31,25 @@ public static class Extensions
         }
     }
 
-    public static int[] DivisibleNumbers(this int[] array)
+    public static IEnumerable<int> DivisibleNumbers(this IEnumerable<int> items)
     {
-
-        var divisibleList = new int[array.Length];
-        int counter = 0;
-
-        foreach (var item in array)
+        foreach (var item in items)
         {
             if ((item % 7 == 0) && (item > 42))
             {
-                divisibleList[counter] = item;
+                yield return item;
             }
-            counter++;
         }
-        return divisibleList;
     }
 
-    public static int[] IsLeapYear(this int[] array)
+    public static IEnumerable<int> IsLeapYear(this IEnumerable<int> items)
     {
-
-        var leapYearList = new int[array.Length];
-        int counter = 0;
-
-        foreach (var year in array)
+        foreach (var year in items)
         {
             if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0))
             {
-                leapYearList[counter] = year;
+                yield return year;
             }
-            counter++;
         }
-        return leapYearList;
     }
 }
