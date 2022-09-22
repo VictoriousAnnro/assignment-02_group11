@@ -30,21 +30,12 @@ public class Queries
 
   public static IEnumerable<Wizard> GetGroupedWizardList(WizardCollection collection) {
     var wizardsQuery = 
-      from w in collection
-      orderby w.Creator descending
-      group w by w.Creator;
+      collection.GroupBy(w => w.Creator)
+      .Select(g => g.OrderBy(w => w.Name))
+      .SelectMany(g => g)
+      .OrderByDescending(w => w.Creator);
 
-    foreach(var group in wizardsQuery) {
-      group.OrderBy(w => w.Name);
-    }
-
-    foreach(var group in wizardsQuery) {
-      foreach (var w in group) {
-        Console.WriteLine(w);
-      }
-    }
-
-    return null;
+    return wizardsQuery.ToList();
   }
 
 }
